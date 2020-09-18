@@ -1,0 +1,8 @@
+These files reproduce the findings in the paper:
+MEDRXIV/2020/188631
+Contact tracing efficiency, transmission heterogeneity, and accelerating COVID-19 epidemics
+Billy Gardner and A. Marm Kilpatrick
+
+To produce Figs 1-3, run the R code in the file:
+R0 code Figs 1_3.r
+Note: to produce Fig 3 you need to uncomment one line changing a single parameter value and then run the code after that through the ggpplot()
