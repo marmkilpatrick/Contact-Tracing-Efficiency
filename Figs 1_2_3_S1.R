@@ -71,7 +71,9 @@ p1=ggplot(dat2, aes(y=R0v, x=cases_per_tracer_calls,col=R0v)) +
   annotate(geom="text",x=0.01, y=aggregate(R0v~Delay,data=dat2,FUN=min)$R0v,
            label=unique(dat2$Delay),size=5)+
   annotate(geom="text",x=0.016, y=1.1*aggregate(R0v~Delay,data=dat2,FUN=min)$R0v[5],
-         label="Delay: symptoms->test/tracing",size=6);p1
+         label="Delay: symptoms->test/tracing",size=6)+
+  theme(panel.grid.minor = element_blank());p1
+ggsave("Fig 1.pdf",plot=p1,width=12,height=8)
 
 #Fig 2--------------------------
 d_msTest=5 #delay from symptom onset to test/trace ~5d from recent data in CA
@@ -117,7 +119,9 @@ p2=ggplot(dat, aes(y=R0v, x=cases_per_tracer_calls,col=R0v)) +
   annotate(geom="text",x=1., y=ylh,
            label=Ncont_p_inf,size=5)+
   annotate(geom="text",x=.9, y=1.07*ylh[4],
-           label="Contacts/case",size=5);p2
+           label="Contacts/case",size=5)+
+  theme(panel.grid.minor = element_blank());p2
+ggsave("Fig 2.pdf",plot=p2,width=12,height=8)
 
 #Fig 3
 f_mstr=0.5 #fraction of mildly symptomatic cases traced
@@ -141,8 +145,9 @@ p3=ggplot(dat, aes(y=R0v, x=cases_per_tracer_calls,col=R0v)) +
   ylab(expression(R[t]))+
   annotate(geom="text",x=1., y=ylh,
            label=Ncont_p_inf,size=5)+
-  annotate(geom="text",x=1., y=1.05*ylh[4],
-           label="Contacts/case",size=5);p3
+  annotate(geom="text",x=1., y=1.05*ylh[4],label="Contacts/case",size=5)+
+  theme(panel.grid.minor = element_blank());p3
+ggsave("Fig 3.pdf",plot=p3,width=12,height=8)
 
 #grid.arrange(p1,p2, p3, nrow = 2,as.table=F)
 #--------------
@@ -216,9 +221,11 @@ parlabs=c(expression(kappa),
           expression(sigma[ss]) )
 
 Rt_sens=Rt_sens/R0(parsR0,cTrace=cTraceF(FrCaseTr,Delay=1/parsR0$msTest,Ninf=Ninf,Ncont_p_inf,NCT,NCCPD,parsR0))-1
+pdf("Fig S2.pdf",width=10,height=8)
 par(mar=c(4, 3, .5, 0.5),mgp=c(2.5,.5,0),cex=2)
 barplot(Rt_sens[,1],horiz=T,names.arg=parlabs,las=2,col="blue",xlim=c(-.11,.11),#xlab="Change in R0")
         xlab=expression(Change~"in"~R[0]))
 barplot(Rt_sens[,2],horiz=T,names.arg=parlabs,las=2,col="red",add=T)
 box();grid(ny=nrow(Rt_sens)+1)
+dev.off()
 
