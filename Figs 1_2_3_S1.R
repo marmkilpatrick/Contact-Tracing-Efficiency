@@ -48,7 +48,7 @@ parsR0_F1 = data.frame(kappa = 1,       #Social distancing factor: set to 1/2.6 
                        gammaA  = 1/8 ,   # Recovery rate of asymptomatic infected - approx 8d infect period He et al
                        gammaMS  = 1/5,   # Recovery rate of mildly symptomatic infected 
                        gammaSS  = 1/10.7 ,   # Recovery rate of severely symptomatic infected - Lewnard et al 2020
-                       gammaQ  = 0.14 ,   # Recovery rate of quarantined not important but 1/7d
+                       gammaQ  = 1/14 ,   # Recovery rate of quarantined not important but 1/14d
                        sigmaA  = 1 ,   # Infectiousness of asymptomatic infected #unknown
                        sigmaPS  = presympInf/postsympInf ,   # Infectiousness of pre-symptomatic infected
                        sigmaMS  = 1 ,   # Infectiousness of mildly symptomatic infected
