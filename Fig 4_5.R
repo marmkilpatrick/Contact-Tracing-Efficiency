@@ -1,4 +1,4 @@
-setwd("c:/marm/research/covid-19/modeling T-CT-I/") #setwd so source("Fig 4_5 Fig 4_5 ModSimReps.r") works
+setwd("") #setwd to location where Fig 4_5 ModSimReps.r lives
 
 #common parameters--------------
 shape=function(mu,sig) mu^2/sig^2;scale = function(mu,sig) sig^2/mu;mn=3.1;sig2=2.15
