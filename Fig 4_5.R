@@ -43,11 +43,12 @@ NSIM=1;Et=1;CTR=F;R0t=R01noCT;stoch=F;Ens=matrix(NA,nrow=(nt*TS+1),ncol=NSIM)
 source("Fig 4_5 ModSimReps.r") 
 outF=data.frame(day=seq(0,nt,by=1/TS),St,Et,In,Rt)
 
-options(scipen=5);titloc=175
+options(scipen=5);titloc=170
+pdf("Fig 4.pdf",width=14,height=8)
 par(mfcol=c(2,3),mar=c(0, 3, 0, 0),mgp=c(1.5,.5,0),oma = c(.5, .5, 0.5, 0.5),cex=1.25)
 matplot(x=outF[,1],y=outF[,2:ncol(outF)],col=1:4,type="l",xaxt="n",lty=1,
         xlab="Day",ylab="Number of people")
-legend(-10,.8e5,c("S","E","I","R"),col=1:4,lty=1,bty="n",seg.len=.75)
+legend(-10,.8e5,c("S","E","I","R"),col=1:4,lty=1,bty="n",seg.len=1,lwd=2)
 text(0,95000,"A")
 text(titloc,95000,"Social distancing")
 text(titloc,90000,"No contact tracing")
@@ -76,17 +77,14 @@ source("Fig 4_5 ModSimReps.r")
 outF=data.frame(day=seq(0,nt,by=1/TS),St,Et,In,Rt)
 
 par(mar=c(0, 0, 0, 0),mgp=c(1.5,.5,0),cex=1.25)
-#par(mfrow=c(2,1),mar=c(0, 3, 0, 0), oma = c(3.5, .5, 0.5, 0.5),mgp=c(1.5,.5,0),cex=1.25)#b,l,t,r
 matplot(x=outF[,1],y=outF[,2:ncol(outF)],col=1:4,type="l",xaxt="n",yaxt="n",lty=1,
         xlab="Day",ylab="Number of people")
-#legend(50,.8e5,c("S","E","I","R"),col=1:4,lty=1,bty="n")
 
 text(0,95000,"C")
 text(titloc,95000,"No social distancing")
 text(titloc,90000,"Unlimited contact tracing")
 par(mar=c(3, 0, 0, 0) )#b,l,t,r
 plot(R0t[-1]~outF[-1,1],xlab="Day",type="l",yaxt="n",ylim=c(0,2.7)) #Rt over time
-#abline(h=R0t[2],lty=2)
 text(0,2.6,"D")
 
 #Fig 4E,F
@@ -95,7 +93,6 @@ NCT=5 # Number of contact tracers - limited pre-scale up
 FrCaseTr=f_mstr*msTest/(msTest+qMSSS+gammaMS)/(1-f_asymp) #fraction of symptomatic cases traced (numerator is frac of total cases)
 cTraceF1 = function(FrCaseTr,Delay,Ninf,Ncont_p_inf,NCT,NCCPD) { #function estimating cTrace parameter
   dTracing=Delay+0.5*Ninf*Ncont_p_inf/(NCT*NCCPD) #duration until traced (2=1 for test results 1 for symptoms)
-  #  return(parsR0$qMSSS/(parsR0$qMSSS+parsR0$gammaMS+parsR0$qEA)*1/dTracing)} #if only severe cases traced
   return(FrCaseTr*qEPS/(qEPS+qEA)*1/dTracing)} #if tracing all symptomatic cases
 cTrace=cTraceF1(FrCaseTr,d_msTest,Ninf,Ncont_p_inf,NCT,NCCPD) #tracing removal rate w/ I=1
 R01 =((kappa * beta) / (cTrace  + qEA + qEPS)) * #initial R0
@@ -118,9 +115,8 @@ text(titloc,95000,"No social distancing")
 text(titloc,90000,"Limited contact tracing")
 par(mar=c(3, 0, 0, 0) )#b,l,t,r
 plot(R0t[-1]~outF[-1,1],xlab="Day",type="l",yaxt="n",ylim=c(0,2.7)) #Rt over time
-#abline(h=R0t[2],lty=2)
 text(0,2.6,"F")
-
+dev.off()
 
 #Fig 5------------------------------
 kappa=0.7 #Limited social distancing
@@ -129,7 +125,6 @@ f_mstr=.5 #Fraction of mildly symptomatic cases traced 1 for Fig 4; 0.5 for fig 
 FrCaseTr=f_mstr*msTest/(msTest+qMSSS+gammaMS)/(1-f_asymp) #fraction of symptomatic cases traced (numerator is frac of total cases)
 cTraceF1 = function(FrCaseTr,Delay,Ninf,Ncont_p_inf,NCT,NCCPD) { #function estimating cTrace parameter
   dTracing=Delay+0.5*Ninf*Ncont_p_inf/(NCT*NCCPD) #duration until traced (2=1 for test results 1 for symptoms)
-  #  return(parsR0$qMSSS/(parsR0$qMSSS+parsR0$gammaMS+parsR0$qEA)*1/dTracing)} #if only severe cases traced
   return(FrCaseTr*qEPS/(qEPS+qEA)*1/dTracing)} #if tracing all symptomatic cases
 cTrace=cTraceF1(FrCaseTr,d_msTest,Ninf,Ncont_p_inf,NCT,NCCPD) #tracing removal rate w/ I=1
 R01 =((kappa * beta) / (cTrace  + qEA + qEPS)) *
@@ -157,6 +152,7 @@ nt=365 #simulation length in days
 TS = 1 #Inverse of time step in days; TS=1 => 24 hr time step; TS=6 => 4 hr time step
 
 # Run simulations via Fig 4_5 ModSimReps.r and plot
+pdf("Fig 5.pdf",width=12,height=8)
 par(mfrow=c(2,2),mar=c(0, 0, 0, 0), oma = c(3.5, 3.5, 0.5, 0.5),mgp=c(1.5,.5,0),cex=1.25)#b,l,t,r
 ht=5000 #ylim max for all panels
 outD=data.frame(day=seq(0,nt,by=1/TS)) #x-axis time label
@@ -210,5 +206,5 @@ stoch=F;source("Fig 4_5 ModSimReps.r") #Run w/ E=5, NO CT, NO stoch
 lines(x=outD[,1],y=Ens[,1],type="l",col="black",xlab="",ylab="",yaxt="n",ylim=c(0,ht),lwd=1.5)
 mtext("Day", side = 1, outer = TRUE, line = 1.7,cex=1.7)
 mtext("Number Latently Infected", side = 2, outer = TRUE, line = 1.7,cex=1.7)
-
+dev.off()
 
